@@ -8,8 +8,8 @@ namespace MovieStoreApi.Domain
         public DateTime ExpirationDate { get; set; }
 
 
-        public PurchasedMovie(string title, int year, string director, double rating, LicensingType licensingType, DateTime purchaseDate, DateTime expirationDate)
-            : base(title, year, director, rating, licensingType)
+        public PurchasedMovie(string title, int year, string director, double rating, double price, LicensingType licensingType, DateTime purchaseDate, DateTime expirationDate)
+            : base(title, year, director, rating, price, licensingType)
         {
             PurchaseDate = purchaseDate;
             ExpirationDate = expirationDate;

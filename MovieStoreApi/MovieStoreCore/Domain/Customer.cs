@@ -1,6 +1,6 @@
 ﻿using MovieStoreCore.Domain.Enums;
 
-namespace MovieStoreApi.Domain
+namespace MovieStoreCore.Domain
 {
     public class Customer
     {
@@ -9,5 +9,8 @@ namespace MovieStoreApi.Domain
         public Status Status { get; set; }
         public Role Role { get; set; }
         public DateTime? StatusExpirationDate { get; set; }
+
+        //public List<PurchasedMovie> PurchasedMovies { get; set; }
+        public IList<PurchasedMovie> PurchasedMovies { get; } = new List<PurchasedMovie>();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MovieStoreCore.Domain.Enums;
 
-namespace MovieStoreApi.Domain
+namespace MovieStoreCore.Domain
 {
     public class Movie
     {

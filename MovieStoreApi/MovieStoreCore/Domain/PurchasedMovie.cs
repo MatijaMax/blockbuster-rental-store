@@ -1,4 +1,4 @@
-﻿namespace MovieStoreApi.Domain
+﻿namespace MovieStoreCore.Domain
 {
     public class PurchasedMovie
     {

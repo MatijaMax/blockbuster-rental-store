@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace MovieStoreInfrastructure.Repositories
 {
@@ -17,7 +16,7 @@ namespace MovieStoreInfrastructure.Repositories
             return context.Set<T>().ToList();
         }
 
-        public T GetByID(Guid id)
+        public T? GetByID(Guid id)
         {
             return context.Set<T>().Find(id);
         }
@@ -29,17 +28,12 @@ namespace MovieStoreInfrastructure.Repositories
 
         public void Delete(T entity)
         {
-            var entry = context.Entry(entity);
-            if (entry.State == EntityState.Detached)
-            {
-                context.Set<T>().Attach(entity);
-            }
             context.Set<T>().Remove(entity);
         }
 
-        public T Find(Expression<Func<T, bool>> predicate)
+        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
         {
-            return context.Set<T>().Where(predicate).FirstOrDefault();
+            return context.Set<T>().Where(predicate);
         }
         public void Save()
         {

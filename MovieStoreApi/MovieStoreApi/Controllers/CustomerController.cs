@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using MovieStoreApi.Customers.Queries;
 using MovieStoreCore.Domain;
 using MovieStoreCore.Domain.Enums;
 
@@ -9,28 +12,30 @@ namespace MovieStoreApi.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly List<Customer> _customers = new List<Customer>();
+        private readonly IMediator _mediator;
+        public CustomerController(IMediator mediator)
+        {
+            this._mediator = mediator;
+        }
 
         [HttpGet]
-        public IActionResult GetAllCustomers()
+        public async Task<IActionResult> GetAllCustomers()
         {
-            return Ok(_customers);
+            List<Customer> customers = await _mediator.Send(new GetAllCustomers.Query { });
+            return customers.IsNullOrEmpty() ? NotFound() : Ok(customers);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCustomer(Guid id)
+        public async Task<IActionResult> GetCustomer(Guid id)
         {
-            var customer = _customers.Find(c => c.Id == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-            return Ok(customer);
+            var customer = await _mediator.Send(new GetCustomer.Query { Id = id });
+            return customer == null ? NotFound() : Ok(customer);
         }
 
         [HttpPost]
-        public IActionResult CreateCustomer(Customer customer)
+        public async Task<IActionResult> CreateCustomer(Customer customer)
         {
-            customer.Id = Guid.NewGuid();
+
             _customers.Add(customer);
             return NoContent();
         }
@@ -64,7 +69,7 @@ namespace MovieStoreApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCustomer(Guid id)
+        public async Task<IActionResult> DeleteCustomer(Guid id)
         {
             Customer? customer = _customers.Find(c => c.Id == id);
             if (customer != null)
@@ -74,6 +79,13 @@ namespace MovieStoreApi.Controllers
             }
             return NotFound();
         }
+
+        public async Task<IActionResult> GetCustomer(Guid id)
+        {
+            var customer = await _mediator.Send(new GetCustomer.Query { Id = id });
+            return customer == null ? NotFound() : Ok(customer);
+        }
+
 
         [HttpPost("purchase")]
         public IActionResult PurchaseMovie(Customer customer, [FromBody] Movie movie)

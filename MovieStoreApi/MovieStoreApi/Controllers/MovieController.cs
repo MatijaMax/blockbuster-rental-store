@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using MovieStoreApi.Movies.Queries;
 using MovieStoreCore.Domain;
 
 namespace MovieStoreApi.Controllers
@@ -8,22 +11,25 @@ namespace MovieStoreApi.Controllers
     public class MovieController : ControllerBase
     {
         private readonly List<Movie> _movies = new List<Movie>();
+        private readonly IMediator _mediator;
+        public MovieController(IMediator mediator)
+        {
+            this._mediator = mediator;
+        }
+
 
         [HttpGet]
-        public IActionResult GetAllMovies()
+        public async Task<IActionResult> GetAllMovies()
         {
-            return Ok(_movies);
+            List<Movie> movies = await _mediator.Send(new GetAllMovies.Query { });
+            return movies.IsNullOrEmpty() ? NotFound() : Ok(movies);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetMovie(Guid id)
+        public async Task<IActionResult> GetMovie(Guid id)
         {
-            var movie = _movies.Find(m => m.Id == id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-            return Ok(movie);
+            var movie = await _mediator.Send(new GetMovie.Query { Id = id });
+            return movie == null ? NotFound() : Ok(movie);
         }
 
         [HttpPost]

@@ -2,16 +2,16 @@
 using MovieStoreCore.Domain;
 using MovieStoreInfrastructure.Repositories;
 
-namespace MovieStoreApi.Customers.Queries
+namespace MovieStoreApi.Customers.Commands
 {
     public static class DeleteCustomer
     {
-        public class Query : IRequest<bool>
+        public class Command : IRequest<bool>
         {
             public Guid Id { get; set; }
         }
 
-        public class RequestHandler : IRequestHandler<Query, bool>
+        public class RequestHandler : IRequestHandler<Command, bool>
         {
             private readonly IRepository<Customer> _repository;
 
@@ -20,21 +20,14 @@ namespace MovieStoreApi.Customers.Queries
                 _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             }
 
-            public Task<bool> Handle(Query request, CancellationToken cancellationToken)
+            public Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (request is null)
                 {
                     throw new ArgumentNullException(nameof(request));
                 }
-
-                if (_repository.GetByID(request.Id) == null)
-                {
-                    return Task.FromResult(false);
-                }
-
-                _repository.Delete(_repository.GetByID(request.Id));
-
-                return Task.FromResult(true);
+                Customer? customer = _repository.GetByID(request.Id);
+                return customer == null ? Task.FromResult(false) : Task.FromResult(true);
             }
         }
     }

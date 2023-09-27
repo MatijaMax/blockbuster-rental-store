@@ -2,13 +2,14 @@
 using MovieStoreCore.Domain;
 using MovieStoreInfrastructure.Repositories;
 
-namespace MovieStoreApi.Customers.Queries
+namespace MovieStoreApi.Customers.Commands
 {
-    public static class CreateCustomer
+    public static class PurchaseMovie
     {
         public class Query : IRequest<Customer?>
         {
-            public Customer? newCustomer { get; set; }
+            public Customer? Customer { get; set; }
+            public Movie? Movie { get; set; }
         }
 
         public class RequestHandler : IRequestHandler<Query, Customer?>
@@ -22,16 +23,9 @@ namespace MovieStoreApi.Customers.Queries
 
             public Task<Customer?> Handle(Query request, CancellationToken cancellationToken)
             {
-                if (request is null)
-                {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                if (_repository.GetByID(request.newCustomer.Id) != null)
-                {
-                    return Task.FromResult<Customer?>(null);
-                }
-                _repository.Insert(request.newCustomer);
-                return Task.FromResult(request.newCustomer);
+
+                //NE MOZES KUPITI ISTI FILM 2 PUTA 
+                return Task.FromResult(request.Customer);
             }
         }
     }

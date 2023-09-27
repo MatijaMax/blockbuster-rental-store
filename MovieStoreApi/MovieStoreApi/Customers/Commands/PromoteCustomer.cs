@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using MovieStoreCore.Domain;
+using MovieStoreCore.Domain.Enums;
 using MovieStoreInfrastructure.Repositories;
 
-namespace MovieStoreApi.Customers.Queries
+namespace MovieStoreApi.Customers.Commands
 {
-    public static class UpdateCustomer
+    public static class PromoteCustomer
     {
         public class Query : IRequest<Customer?>
         {
-            public Customer? newCustomer { get; set; }
+            public Guid Id { get; set; }
         }
 
         public class RequestHandler : IRequestHandler<Query, Customer?>
@@ -26,15 +27,20 @@ namespace MovieStoreApi.Customers.Queries
                 {
                     throw new ArgumentNullException(nameof(request));
                 }
-                Customer? oldCustomer = _repository.GetByID(request.newCustomer.Id);
-                if (_repository.GetByID(request.newCustomer.Id) == null)
+                Customer? oldCustomer = _repository.GetByID(request.Id);
+                if (_repository.GetByID(request.Id) == null)
                 {
                     return Task.FromResult<Customer?>(null);
                 }
-                oldCustomer.StatusExpirationDate = request.newCustomer.StatusExpirationDate;
-                oldCustomer.Status = request.newCustomer.Status;
-                oldCustomer.Email = request.newCustomer.Email;
-                oldCustomer.Role = request.newCustomer.Role;
+
+                //TODO 
+                //ADVANCED USLOVI PROMOCIJE
+                //NIJE MU ISTEKLO
+                //2. poslednjih x meseci je kupio y filmova
+                //3. kad uvedemo cenu da je potrosio x kolicinu novca
+                oldCustomer.StatusExpirationDate = DateTime.Now.AddYears(1);
+                oldCustomer.Status = Status.Advanced;
+
                 return Task.FromResult(oldCustomer);
             }
         }

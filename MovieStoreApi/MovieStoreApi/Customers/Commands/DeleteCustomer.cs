@@ -27,7 +27,13 @@ namespace MovieStoreApi.Customers.Commands
                     throw new ArgumentNullException(nameof(request));
                 }
                 Customer? customer = _repository.GetByID(request.Id);
-                return customer == null ? Task.FromResult(false) : Task.FromResult(true);
+                if (customer == null)
+                {
+                    return Task.FromResult(false);
+                }
+                _repository.Delete(customer);
+                _repository.Save();
+                return Task.FromResult(true);
             }
         }
     }

@@ -6,12 +6,12 @@ namespace MovieStoreApi.Customers.Commands
 {
     public static class CreateCustomer
     {
-        public class Command : IRequest<Customer?>
+        public class Command : IRequest<Customer>
         {
             public string Email { get; set; } = string.Empty;
         }
 
-        public class RequestHandler : IRequestHandler<Command, Customer?>
+        public class RequestHandler : IRequestHandler<Command, Customer>
         {
             private readonly IRepository<Customer> _repository;
 
@@ -20,7 +20,7 @@ namespace MovieStoreApi.Customers.Commands
                 _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             }
 
-            public Task<Customer?> Handle(Command request, CancellationToken cancellationToken)
+            public Task<Customer> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (request is null)
                 {

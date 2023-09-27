@@ -13,7 +13,7 @@ namespace MovieStoreApi.Controllers
         private readonly IMediator _mediator;
         public CustomerController(IMediator mediator)
         {
-            this._mediator = mediator;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         [HttpGet]
@@ -31,48 +31,40 @@ namespace MovieStoreApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer(string customerEmail)
+        public async Task<IActionResult> CreateCustomer(string email)
         {
-            var createdCustomer = await _mediator.Send(new CreateCustomer.Command { Email = customerEmail });
-            return createdCustomer == null ? NoContent() : Ok(createdCustomer);
+            var createdCustomer = await _mediator.Send(new CreateCustomer.Command { Email = email });
+            return Ok(createdCustomer);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCustomer(Guid id, string email)
         {
-            var updatedCustomer = await _mediator.Send(new UpdateCustomer.Command { Id = id, Email = email });
-            return Ok(updatedCustomer);
+
+            var result = await _mediator.Send(new UpdateCustomer.Command { Id = id, Email = email });
+            return result ? Ok() : NotFound();
+
         }
 
-        [HttpPut("promote/{id}")]
+        [HttpPut("{id}/promote")]
         public async Task<IActionResult> PromoteCustomer(Guid id)
         {
             var updatedCustomer = await _mediator.Send(new PromoteCustomer.Query { Id = id });
-            return Ok(updatedCustomer);
+            return updatedCustomer ? Ok(true) : NotFound();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(Guid id)
         {
             bool isFound = await _mediator.Send(new DeleteCustomer.Command { Id = id });
-            return isFound == false ? NotFound() : Ok(true);
+            return isFound ? Ok(true) : NotFound();
         }
 
         [HttpPost("{customerId}/purchase/{movieId}")]
         public async Task<IActionResult> PurchaseMovie(Guid customerId, Guid movieId)
         {
-            PurchasedMovie purchasedMovie = new PurchasedMovie
-            {
-                Id = Guid.NewGuid(),
-                PurchaseDate = DateTime.Now,
-                ExpirationDate = DateTime.Now.AddYears(1),
-                // Customer = customer,
-                // Movie = movie
-            };
-            // var pur
-            // var purchaser = await _mediator.Send(new PurchaseMovie.Query { Customer = customer, Movie = movie });
-            //return purchaser == null ? NotFound() : Ok(true);
-            return Ok();
+            var isCreated = await _mediator.Send(new PurchaseMovie.Command { CustomerId = customerId, MovieId = movieId });
+            return isCreated ? Ok(true) : NotFound();
         }
     }
 }

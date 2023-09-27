@@ -7,41 +7,65 @@ namespace MovieStoreApi.Customers.Commands
 {
     public static class PromoteCustomer
     {
-        public class Query : IRequest<Customer?>
+        public class Query : IRequest<bool>
         {
             public Guid Id { get; set; }
         }
 
-        public class RequestHandler : IRequestHandler<Query, Customer?>
+        public class RequestHandler : IRequestHandler<Query, bool>
         {
-            private readonly IRepository<Customer> _repository;
+            private readonly IRepository<Customer> _customerRepository;
 
-            public RequestHandler(IRepository<Customer> repository)
+            public RequestHandler(IRepository<Customer> customerRepository)
             {
-                _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+                _customerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
             }
 
-            public Task<Customer?> Handle(Query request, CancellationToken cancellationToken)
+            public Task<bool> Handle(Query request, CancellationToken cancellationToken)
             {
                 if (request is null)
                 {
                     throw new ArgumentNullException(nameof(request));
                 }
-                Customer? oldCustomer = _repository.GetByID(request.Id);
-                if (_repository.GetByID(request.Id) == null)
+                Customer? customer = _customerRepository.GetByID(request.Id);
+                if (customer == null)
                 {
-                    return Task.FromResult<Customer?>(null);
+                    return Task.FromResult(false);
                 }
-
                 //TODO 
-                //ADVANCED USLOVI PROMOCIJE
-                //NIJE MU ISTEKLO
-                //2. poslednjih x meseci je kupio y filmova
-                //3. kad uvedemo cenu da je potrosio x kolicinu novca
-                oldCustomer.StatusExpirationDate = DateTime.Now.AddYears(1);
-                oldCustomer.Status = Status.Advanced;
+                //Conditionals
+                //1.Check status expiration date
+                //2.Has the user bought enough(x) movies in the last(y) month
+                //3.Has he spent an x amount of money
+                if (IsStatusExpired(customer) && IsPurchaseAmountSatisfied(customer) && IsEnoughMoneySpent())
+                {
+                    customer.StatusExpirationDate = DateTime.Now.AddYears(1);
+                    customer.Status = Status.Advanced;
+                }
+                _customerRepository.Save();
+                return Task.FromResult(true);
+            }
 
-                return Task.FromResult(oldCustomer);
+            private static bool IsStatusExpired(Customer customer)
+            {
+                return customer.Status != Status.Advanced || !customer.StatusExpirationDate.HasValue || customer.StatusExpirationDate.Value < DateTime.Now;
+            }
+
+            //The user must buy at least 2 movies in a time period of 2 months 
+            private static bool IsPurchaseAmountSatisfied(Customer customer)
+            {
+                var purchasedMovies = customer.PurchasedMovies.Where(purchasedMovie => purchasedMovie.PurchaseDate > DateTime.Now.AddMonths(-2));
+                return purchasedMovies.Count() > 2;
+
+            }
+            public bool IsEnoughMoneySpent()
+            {
+
+                //kad dodamo cenu
+
+
+
+                return true;
             }
         }
     }

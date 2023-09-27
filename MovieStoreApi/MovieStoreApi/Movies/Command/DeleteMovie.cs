@@ -27,7 +27,15 @@ namespace MovieStoreApi.Movies.Command
                     throw new ArgumentNullException(nameof(request));
                 }
                 Movie? movie = _repository.GetByID(request.Id);
-                return movie == null ? Task.FromResult(false) : Task.FromResult(true);
+                if (movie == null)
+                {
+                    return Task.FromResult(false);
+                }
+                _repository.Delete(movie);
+                _repository.Save();
+                return Task.FromResult(true);
+
+
             }
         }
     }

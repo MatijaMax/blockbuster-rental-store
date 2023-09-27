@@ -6,12 +6,12 @@ namespace MovieStoreApi.Customers.Queries
 {
     public static class DeleteCustomer
     {
-        public class Query : IRequest<Customer?>
+        public class Query : IRequest<bool>
         {
             public Guid Id { get; set; }
         }
 
-        public class RequestHandler : IRequestHandler<Query, Customer?>
+        public class RequestHandler : IRequestHandler<Query, bool>
         {
             private readonly IRepository<Customer> _repository;
 
@@ -20,7 +20,7 @@ namespace MovieStoreApi.Customers.Queries
                 _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             }
 
-            public Task<Customer?> Handle(Query request, CancellationToken cancellationToken)
+            public Task<bool> Handle(Query request, CancellationToken cancellationToken)
             {
                 if (request is null)
                 {
@@ -29,12 +29,12 @@ namespace MovieStoreApi.Customers.Queries
 
                 if (_repository.GetByID(request.Id) == null)
                 {
-                    return;
+                    return Task.FromResult(false);
                 }
 
                 _repository.Delete(_repository.GetByID(request.Id));
 
-                return Task.FromResult(customer);
+                return Task.FromResult(true);
             }
         }
     }

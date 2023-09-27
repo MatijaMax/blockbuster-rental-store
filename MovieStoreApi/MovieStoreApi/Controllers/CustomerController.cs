@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MovieStoreApi.Customers.Queries;
 using MovieStoreCore.Domain;
-using MovieStoreCore.Domain.Enums;
 
 namespace MovieStoreApi.Controllers
 {
@@ -35,60 +34,34 @@ namespace MovieStoreApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCustomer(Customer customer)
         {
-
-            _customers.Add(customer);
-            return NoContent();
+            customer.Id = Guid.NewGuid();
+            var createdCustomer = await _mediator.Send(new CreateCustomer.Query { newCustomer = customer });
+            return createdCustomer == null ? NoContent() : Ok(createdCustomer);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateCustomer(Guid id, Customer newCustomer)
+        public async Task<IActionResult> UpdateCustomer(Guid id, Customer customer)
         {
-            Customer? oldCustomer = _customers.Find(c => c.Id == id);
-            if (oldCustomer == null)
-            {
-                return NotFound();
-            }
-            oldCustomer.StatusExpirationDate = newCustomer.StatusExpirationDate;
-            oldCustomer.Status = newCustomer.Status;
-            oldCustomer.Email = newCustomer.Email;
-            oldCustomer.Role = newCustomer.Role;
-            return NoContent();
+            var createdCustomer = await _mediator.Send(new UpdateCustomer.Query { newCustomer = customer });
+            return createdCustomer == null ? NotFound() : Ok(customer);
         }
 
         [HttpPut("promote/{id}")]
-        public IActionResult PromoteCustomer(Guid id)
+        public async Task<IActionResult> PromoteCustomer(Guid id)
         {
-            Customer? oldCustomer = _customers.Find(c => c.Id == id);
-            if (oldCustomer == null)
-            {
-                return NotFound();
-            }
-            oldCustomer.StatusExpirationDate = DateTime.Now.AddYears(1);
-            oldCustomer.Status = Status.Advanced;
-            return NoContent();
+            var createdCustomer = await _mediator.Send(new PromoteCustomer.Query { Id = id });
+            return createdCustomer == null ? NotFound() : Ok(createdCustomer);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(Guid id)
         {
-            Customer? customer = _customers.Find(c => c.Id == id);
-            if (customer != null)
-            {
-                _customers.Remove(customer);
-                return NoContent();
-            }
-            return NotFound();
+            bool isFound = await _mediator.Send(new DeleteCustomer.Query { Id = id });
+            return isFound == false ? NotFound() : Ok(true);
         }
-
-        public async Task<IActionResult> GetCustomer(Guid id)
-        {
-            var customer = await _mediator.Send(new GetCustomer.Query { Id = id });
-            return customer == null ? NotFound() : Ok(customer);
-        }
-
 
         [HttpPost("purchase")]
-        public IActionResult PurchaseMovie(Customer customer, [FromBody] Movie movie)
+        public async Task<IActionResult> PurchaseMovie(Customer customer, [FromBody] Movie movie)
         {
             PurchasedMovie purchasedMovie = new PurchasedMovie
             {
@@ -98,9 +71,8 @@ namespace MovieStoreApi.Controllers
                 Customer = customer,
                 Movie = movie
             };
-
-            // Process the purchasedMovie object as needed
-            return NoContent();
+            var purchaser = await _mediator.Send(new PurchaseMovie.Query { Customer = customer, Movie = movie });
+            return purchaser == null ? NotFound() : Ok(true);
         }
     }
 }

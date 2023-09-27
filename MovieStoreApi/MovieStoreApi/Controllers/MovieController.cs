@@ -33,37 +33,25 @@ namespace MovieStoreApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateMovie([FromBody] Movie movie)
+        public async Task<IActionResult> CreateMovie([FromBody] Movie movie)
         {
             movie.Id = Guid.NewGuid();
-            _movies.Add(movie);
-            return NoContent();
+            var createdMovie = await _mediator.Send(new CreateMovie.Query { newMovie = movie });
+            return createdMovie == null ? NoContent() : Ok(createdMovie);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateMovie(Guid id, [FromBody] Movie newMovie)
+        public async Task<IActionResult> UpdateMovie(Guid id, Movie movie)
         {
-            Movie oldMovie = _movies.Find(m => m.Id == id);
-            if (oldMovie == null)
-            {
-                return NotFound();
-            }
-            oldMovie.Title = newMovie.Title;
-            oldMovie.Year = newMovie.Year;
-            oldMovie.LicensingType = newMovie.LicensingType;
-            return NoContent();
+            var createdMovie = await _mediator.Send(new UpdateMovie.Query { newMovie = movie });
+            return createdMovie == null ? NotFound() : Ok(movie);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteMovie(Guid id)
+        public async Task<IActionResult> DeleteMovie(Guid id)
         {
-            Movie movie = _movies.Find(m => m.Id == id);
-            if (movie != null)
-            {
-                _movies.Remove(movie);
-                return NoContent();
-            }
-            return NotFound();
+            bool isFound = await _mediator.Send(new DeleteMovie.Query { Id = id });
+            return isFound == false ? NotFound() : Ok(true);
         }
     }
 }

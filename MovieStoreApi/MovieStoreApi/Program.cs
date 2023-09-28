@@ -13,8 +13,8 @@ var configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddDbContext<MovieStoreContext>(options =>
 {
-    var connectionString = configuration.GetConnectionString("MovieStoreConnection");
-    options.UseSqlServer(connectionString);
+    options.UseSqlServer(configuration.GetConnectionString("MovieStoreConnection"));
+
 });
 
 // Configure MediatR
@@ -22,6 +22,10 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
+
+
+
+
 
 // Initialize repositories
 builder.Services.AddTransient<IRepository<Movie>, GenericRepository<Movie>>();
@@ -39,13 +43,16 @@ builder.Services.AddOpenApiDocument(cfg =>
 builder.Services.AddControllers();
 
 var app = builder.Build();
+// Automate Update-Database command
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<MovieStoreContext>();
+dbContext.Database.Migrate();
+
 
 // Configure OpenApi/Swagger
 
 app.UseOpenApi(); // serve OpenAPI/Swagger documents
 app.UseSwaggerUi3(); // serve Swagger 
-
-
 
 // Configure the HTTP request pipeline.
 

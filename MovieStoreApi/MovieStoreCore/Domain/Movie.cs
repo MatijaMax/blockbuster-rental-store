@@ -8,5 +8,7 @@ namespace MovieStoreCore.Domain
         public string Title { get; set; } = string.Empty;
         public int Year { get; set; }
         public LicensingType LicensingType { get; set; }
+
+        public double Price { get; set; }
     }
 }

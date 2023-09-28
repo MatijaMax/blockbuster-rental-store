@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MovieStoreApi;
 using MovieStoreCore.Domain;
 using MovieStoreInfrastructure;
 using MovieStoreInfrastructure.Repositories;
@@ -27,12 +28,24 @@ builder.Services.AddTransient<IRepository<Movie>, GenericRepository<Movie>>();
 builder.Services.AddTransient<IRepository<Customer>, GenericRepository<Customer>>();
 builder.Services.AddTransient<IRepository<PurchasedMovie>, GenericRepository<PurchasedMovie>>();
 
+//Schema name generation
+builder.Services.AddOpenApiDocument(cfg =>
+{
+    cfg.SchemaNameGenerator = new CustomSwaggerSchemaNameGenerator();
+});
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+// Configure OpenApi/Swagger
+
+app.UseOpenApi(); // serve OpenAPI/Swagger documents
+app.UseSwaggerUi3(); // serve Swagger 
+
+
 
 // Configure the HTTP request pipeline.
 

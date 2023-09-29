@@ -1,0 +1,14 @@
+.spacer{
+    flex: 1 1 auto;
+}
+
+.custom-favicon {
+    display: inline-block; /* Ensure the span takes up space */
+    width: 36px; /* Set the desired width for the favicon */
+    height: 36px; /* Set the desired height for the favicon */
+    background-image: url('src\favicon.ico'); /* Specify the path to your favicon.ico */
+    background-size: contain; /* Adjust the sizing as needed */
+    background-size: contain;
+    vertical-align: middle; /* Align the icon vertically within the line */
+    margin-right: 30px; /* Adjust this value to control spacing */
+  }

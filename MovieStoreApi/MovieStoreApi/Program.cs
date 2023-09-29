@@ -10,6 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
 var configuration = builder.Configuration;
 
+//Configure CORS middleware
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost4200", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 // Add services to the container.
 builder.Services.AddDbContext<MovieStoreContext>(options =>
 {
@@ -23,10 +34,6 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
 
-
-
-
-
 // Initialize repositories
 builder.Services.AddTransient<IRepository<Movie>, GenericRepository<Movie>>();
 builder.Services.AddTransient<IRepository<Customer>, GenericRepository<Customer>>();
@@ -39,27 +46,23 @@ builder.Services.AddOpenApiDocument(cfg =>
 });
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
+//Build the app
 var app = builder.Build();
+app.UseCors("AllowLocalhost4200");
+
 // Automate Update-Database command
 using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<MovieStoreContext>();
 dbContext.Database.Migrate();
 
-
 // Configure OpenApi/Swagger
-
 app.UseOpenApi(); // serve OpenAPI/Swagger documents
 app.UseSwaggerUi3(); // serve Swagger 
 
 // Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

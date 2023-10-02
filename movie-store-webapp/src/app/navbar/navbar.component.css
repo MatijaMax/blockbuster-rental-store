@@ -1,14 +1,40 @@
 .spacer{
     flex: 1 1 auto;
 }
-
+@import url('https://fonts.googleapis.com/css?family=Bungee+Shade');
+@import url('https://fonts.googleapis.com/css2?family=Wendy+One&display=swap');
 .custom-favicon {
-    display: inline-block; /* Ensure the span takes up space */
-    width: 36px; /* Set the desired width for the favicon */
-    height: 36px; /* Set the desired height for the favicon */
-    background-image: url('src\favicon.ico'); /* Specify the path to your favicon.ico */
-    background-size: contain; /* Adjust the sizing as needed */
+    display: inline-block;
+    width: 43px;
+    height: 43px;
+    background-image: url('src/favicon.ico');
     background-size: contain;
-    vertical-align: middle; /* Align the icon vertically within the line */
-    margin-right: 30px; /* Adjust this value to control spacing */
-  }
+    background-position: left center;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    margin-right: 30px;
+    font-size: 26px;
+    line-height: 50px;
+    padding-left: 50px;
+}
+
+.custom-favicon .text-inside {
+    font-family: "Bungee Shade", cursive;
+    text-align: center;
+    font-size: 35px;
+    color: rgb(255, 221, 0);
+    background-color: transparent; /* Set background-color to transparent */
+    text-shadow: rgb(0, 0, 0) 2px 2px 2px;
+    line-height: 40px; /* Adjust line-height to match the height of the icon */
+    padding-left: 10px; /* Adjust this value to control the space between the icon and text */
+}
+
+.wendy-one-text {
+    font-family: "Wendy One", sans-serif;
+    color: rgb(255, 221, 0) !important;
+}
+
+
+
+
+

@@ -1,0 +1,10 @@
+.purple-card {
+    width: 100px ; /* Set a fixed width */
+    height: 160px; /* Set a fixed height */
+    background-color: #6A1B9A;
+    color: rgb(255, 221, 0); /* Set text color to RGB(255, 221, 0) */
+    box-shadow:blueviolet; /* Remove the default box shadow */
+    border-radius: 1000; /* Remove the default border-radius */
+    padding: 36px; /* Add padding to create a rectangular appearance */
+    margin: 36px; /* Add margin to push the card away from the screen edges */
+  }

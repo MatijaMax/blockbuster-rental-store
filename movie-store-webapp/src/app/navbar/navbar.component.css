@@ -16,6 +16,11 @@
     font-size: 26px;
     line-height: 50px;
     padding-left: 50px;
+    z-index: 2;
+}
+
+mat-toolbar {
+    z-index: 2; /* Ensure the mat-toolbar is above other content */
 }
 
 .custom-favicon .text-inside {
@@ -27,11 +32,13 @@
     text-shadow: rgb(0, 0, 0) 2px 2px 2px;
     line-height: 40px; /* Adjust line-height to match the height of the icon */
     padding-left: 10px; /* Adjust this value to control the space between the icon and text */
+    z-index: 2;
 }
 
 .wendy-one-text {
     font-family: "Wendy One", sans-serif;
     color: rgb(255, 221, 0) !important;
+    z-index: 2;
 }
 
 

@@ -1,1 +1,23 @@
-<p>movies works!</p>
+<div class="basic-container">
+    <mat-grid-list cols="2" rowHeight="200px" gutterSize="16px" [style.height]="'400px'">
+      <mat-grid-tile *ngFor="let movie of movies">
+        <mat-card [style.width]="'100%'" class="purple-card">
+          <div fxLayout="column" fxLayoutGap="8px">
+            <div>
+              <span>Title:</span> {{ movie.title }}
+            </div>
+            <div>
+              <span>Year:</span> {{ movie.year }}
+            </div>
+            <div>
+              <span *ngIf="movie.licensingType === 0">Licensing Type: Two days</span>
+              <span *ngIf="movie.licensingType === 1">Licensing Type: Lifelong</span>
+            </div>
+            <div>
+              <span>Price:</span> {{ movie.price }}
+            </div>
+          </div>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>

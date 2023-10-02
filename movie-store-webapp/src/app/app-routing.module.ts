@@ -4,7 +4,6 @@ import { AppComponent } from './app.component';
 import { CustomersComponent } from './customers/customers.component';
 import { MoviesComponent } from './movies/movies.component';
 import { HomeComponent } from './home/home.component';
-import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
   

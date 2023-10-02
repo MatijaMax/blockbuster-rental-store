@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { MovieClient, Movie} from 'src/app/api/api-reference';
+import { Router } from '@angular/router';
+import { MovieClient, Movie } from 'src/app/api/api-reference';
 @Component({
   selector: 'app-movies',
   templateUrl: './movies.component.html',
@@ -7,11 +8,14 @@ import { MovieClient, Movie} from 'src/app/api/api-reference';
 })
 export class MoviesComponent {
   movies: Movie[] = [];
-  constructor(private movieClient: MovieClient){
+  constructor(private movieClient: MovieClient, private router: Router) {
 
-    this.movieClient.getAllMovies().subscribe((data: Movie[]) => {
-    this.movies = data;
-    console.log(this.movies);
-  });
+    this.movieClient.getAllMovies().subscribe(data => this.movies = data);
   }
+
+  createMovie() {
+    // Code to execute when the button is clicked
+    this.router.navigate(['/movies/create']);
+  }
+
 }

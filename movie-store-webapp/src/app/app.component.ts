@@ -9,13 +9,5 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
   title = 'movie-store-webapp';
-  customers: Customer[] = [];
-  constructor(private customerClient: CustomerClient) {
-    
-    this.customerClient.getAllCustomers().subscribe((data: Customer[]) => {
-    this.customers = data;
-    console.log(this.customers);
-    });
-  }
 }
 

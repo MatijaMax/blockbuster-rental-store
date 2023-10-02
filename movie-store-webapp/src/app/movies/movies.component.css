@@ -8,3 +8,11 @@
     padding: 36px; /* Add padding to create a rectangular appearance */
     margin: 36px; /* Add margin to push the card away from the screen edges */
   }
+
+  .rotate-icon .mat-icon {
+    transform: rotate(90deg); /* Adjust the rotation angle as needed */
+  }
+
+  .custom-menu {
+    background-color: yellow;
+  }

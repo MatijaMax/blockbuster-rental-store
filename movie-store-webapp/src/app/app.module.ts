@@ -12,10 +12,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { CustomersComponent } from './customers/customers.component';
 import { MoviesComponent } from './movies/movies.component';
-import { HomeComponent } from './home/home.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatMenu, MatMenuModule} from '@angular/material/menu';
+import { EditCustomerComponent } from './edit-customer/edit-customer.component';
+import { CreateMovieComponent } from './create-movie/create-movie.component';
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     NavbarComponent,
     CustomersComponent,
     MoviesComponent,
-    HomeComponent
+    EditCustomerComponent,
+    CreateMovieComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +42,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatTableModule,
     MatCardModule,
     MatGridListModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

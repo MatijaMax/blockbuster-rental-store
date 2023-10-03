@@ -19,6 +19,8 @@ import {MatMenu, MatMenuModule} from '@angular/material/menu';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 import { CreateMovieComponent } from './create-movie/create-movie.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -45,6 +47,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatGridListModule,
     MatMenuModule,
     FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

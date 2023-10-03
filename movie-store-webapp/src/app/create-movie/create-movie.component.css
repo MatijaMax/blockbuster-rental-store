@@ -1,0 +1,67 @@
+/* Center the form vertically and horizontally */
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Makes the container take up the full viewport height */
+}
+
+/* Style the form */
+.form {
+  background-color: #f4f4f4;
+  padding: 60px;
+  border-radius: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 340px; /* Adjust the maximum width as needed */
+  width: 100%;
+  text-align: center; /* Center text within the form */
+  background-image: url('https://bigthink.com/wp-content/uploads/2020/10/origin-26.jpg'); /* Replace 'path-to-your-image.jpg' with the actual URL or file path of your background image */
+  background-size: cover; /* Scale the background image to cover the entire form */
+  background-repeat: no-repeat; /* Prevent the background image from repeating */
+  color: yellow; /* Set the text color to white or a color that contrasts with the background image */
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Style the labels */
+.form-group label {
+  display: block;
+  font-size: large;
+  font-family: "Wendy One", sans-serif;
+  color: rgb(255, 221, 0) !important;
+  margin-bottom: 1px;
+  text-align: center;
+}
+
+/* Style the input fields */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+  width: 80%;
+  padding: 10px;
+  font-size: 20px; /* Adjust the font size as needed */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1px;
+  box-sizing: border-box;
+  background-color: lightyellow; 
+}
+
+/* Center the button within the form */
+button[type="submit"] {
+  display: block;
+  margin: 0 auto;
+  width: 200px;
+  height: 50px;
+  font-size: large;
+  font-family: "Wendy One", sans-serif;
+  color: rgb(255, 221, 0) !important;
+  background-color: #4B0082;
+}
+.error-message {
+  color:  white;
+  font-size: 20px;
+  font-weight: 500 /* Adjust the font size as needed */
+}

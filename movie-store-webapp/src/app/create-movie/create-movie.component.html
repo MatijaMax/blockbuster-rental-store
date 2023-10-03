@@ -1,1 +1,34 @@
-<p>create-movie works!</p>
+<div class="form-container">
+  <form [formGroup]="movieForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" id="title" formControlName="title">
+      <div *ngIf="movieForm?.get('title')?.hasError('required')" class="error-message">
+        Title is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="year">Year:</label>
+      <input type="number" id="year" formControlName="year">
+      <div *ngIf="movieForm?.get('year')?.hasError('required')" class="error-message">
+        Year is required.
+      </div>
+      <div *ngIf="movieForm?.get('year')?.hasError('pattern')" class="error-message">
+        Year must be a four-digit number.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="licensingType">Licensing Type:</label>
+      <select [(ngModel)]='ngSelect' id="licensingType" formControlName="licensingType" value=0>
+        <option [value]="0" selected="selected">Two Days</option>
+        <option [value]="1">Lifelong</option>
+      </select>
+      <div *ngIf="movieForm?.get('licensingType')?.hasError('required')" class="error-message">
+        Licensing Type is required.
+      </div>
+    </div>
+    <button type="submit" [disabled]="!movieForm?.valid">Submit</button>
+  </form>
+</div>

@@ -18,6 +18,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatMenu, MatMenuModule} from '@angular/material/menu';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 import { CreateMovieComponent } from './create-movie/create-movie.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import { CreateMovieComponent } from './create-movie/create-movie.component';
     CustomersComponent,
     MoviesComponent,
     EditCustomerComponent,
-    CreateMovieComponent
+    CreateMovieComponent,   
   ],
   imports: [
     BrowserModule,
@@ -43,6 +44,7 @@ import { CreateMovieComponent } from './create-movie/create-movie.component';
     MatCardModule,
     MatGridListModule,
     MatMenuModule,
+    FlexLayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

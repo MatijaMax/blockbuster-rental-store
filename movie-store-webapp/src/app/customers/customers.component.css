@@ -1,1 +1,29 @@
 
+.flex-table {
+    flex: 1; /* Allow the table to grow to fill the available space */
+    overflow: auto; /* Add scrolling if the content overflows */
+    border-collapse: collapse; /* Collapse table borders */
+    width: 100%; /* Ensure the table fills its container */
+    background-color: #f0f0f0; /* Set the background color */
+    border: 2px solid #000; /* Add a 2px solid black border */
+  }
+  
+  /* Style table header */
+  .flex-table th {
+    background-color: #4B0082; /* Header background color */
+    color: #fff; /* Header text color */
+    padding: 10px; /* Header cell padding */
+    border: 2px solid #000; /* Header cell border */
+    font-family: "Wendy One", sans-serif;
+    font-size: large;
+    color: rgb(255, 221, 0) !important;
+  }
+  
+  /* Style table cells */
+  .flex-table td {
+    background-color: #D8BFD8; /* Cell background color */
+    color: #000; /* Cell text color */
+    padding: 10px; /* Cell padding */
+    border: 2px solid #000; /* Cell border */
+    font-size: larger;
+  }

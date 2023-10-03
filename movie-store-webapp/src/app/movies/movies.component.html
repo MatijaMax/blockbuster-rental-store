@@ -1,36 +1,32 @@
-<div class="basic-container">
-  <mat-grid-list cols="2" rowHeight="200px" gutterSize="16px" [style.height]="'400px'">
-    <mat-grid-tile *ngFor="let movie of movies">
-      <mat-card [style.width]="'100%'" class="purple-card">
-        <div fxLayout="column" fxLayoutGap="8px">
-          <div>
-            <span>Title:</span> {{ movie.title }}
-          </div>
-          <div>
-            <span>Year:</span> {{ movie.year }}
-          </div>
-          <div>
-            <span *ngIf="movie.licensingType === 0">Licensing Type: Two days</span>
-            <span *ngIf="movie.licensingType === 1">Licensing Type: Lifelong</span>
-          </div>
-          <div>
-            <span>Price:</span> {{ movie.price }}
-          </div>
-          <div>
-              <button mat-raised-button color="accent" class="mat-button-large">Purchase</button>
-              <button mat-raised-button color="accent" class="mat-button-large">Rent</button>
-             
-            <!-- Mat Menu -->
-            <button mat-icon-button [matMenuTriggerFor]="menu" class="rotate-icon mat-button-large">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" class="mat-button-large custom-menu">
-              <button routerLink="movies/create" (click)="createMovie()" mat-menu-item>Edit</button>
-              <button mat-menu-item>Delete</button>
-            </mat-menu>
-          </div>
-        </div>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+<div class="basic-container" fxLayout="row wrap" fxLayoutAlign="center start">
+  <mat-card *ngFor="let movie of movies" class="purple-card">
+    <div fxLayout="column" fxLayoutGap="8px">
+      <div>
+        <p>Title: {{ movie.title }}</p>
+      </div>
+      <div>
+        <p>Year: {{ movie.year }}</p>
+      </div>
+      <div>
+        <p *ngIf="movie.licensingType === 0">Licensing Type: Two days</p>
+        <p *ngIf="movie.licensingType === 1">Licensing Type: Lifelong</p>
+      </div>
+      <div>
+        <p>Price: {{ movie.price }}</p>
+      </div>
+      <div>
+        <button mat-raised-button color="accent" class="mat-button-large" *ngIf="movie.licensingType === 0">Purchase</button>
+        <button mat-raised-button color="accent" class="mat-button-large" *ngIf="movie.licensingType === 1">Rent</button>
+
+        <!-- Mat Menu -->
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="rotate-icon mat-button-large">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" class="mat-button-large custom-menu">
+          <button routerLink="movies/create" (click)="createMovie()" mat-menu-item>Edit</button>
+          <button mat-menu-item (click)="movie.id && deleteMovie(movie.id)">Delete</button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card>
 </div>

@@ -34,7 +34,7 @@ namespace MovieStoreApi.Customers.Commands
                 }
                 //TODO 
                 //Conditionals
-                //1.Check status expiration date
+                //1.Check status piration date
                 //2.Has the user bought enough(x) movies in the last(y) month
                 //3.Has he spent an x amount of money
                 if (IsStatusExpired(customer) && IsPurchaseAmountSatisfied(customer) && IsEnoughMoneySpent())

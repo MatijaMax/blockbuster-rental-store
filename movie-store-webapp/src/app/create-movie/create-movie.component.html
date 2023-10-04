@@ -21,14 +21,14 @@
 
     <div class="form-group">
       <label for="licensingType">Licensing Type:</label>
-      <select [(ngModel)]='ngSelect' id="licensingType" formControlName="licensingType" value=0>
-        <option [value]="0" selected="selected">Two Days</option>
-        <option [value]="1">Lifelong</option>
+      <select [(ngModel)]='ngSelect' id="licensingType" formControlName="licensingType">
+        <option [ngValue]="0">Two Days</option>
+        <option [ngValue]="1">Lifelong</option>
       </select>
       <div *ngIf="movieForm?.get('licensingType')?.hasError('required')" class="error-message">
         Licensing Type is required.
       </div>
     </div>
-    <button type="submit" [disabled]="!movieForm?.valid">Submit</button>
+    <button type="submit" [disabled]="!movieForm.valid">Submit</button>
   </form>
 </div>

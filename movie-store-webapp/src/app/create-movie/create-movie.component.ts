@@ -1,50 +1,85 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MovieClient, Movie } from 'src/app/api/api-reference';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs'; // Import Subscription from 'rxjs'
-
-// Import CreateMovieCommand from your API reference (if it's not already imported)
-import { CreateMovieCommand } from 'src/app/api/api-reference';
+import { MovieClient, Movie, LicensingType } from 'src/app/api/api-reference';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-movie',
   templateUrl: './create-movie.component.html',
   styleUrls: ['./create-movie.component.css']
 })
-export class CreateMovieComponent {
+export class CreateMovieComponent implements OnInit, OnDestroy {
   movieForm: FormGroup;
-  ngSelect = 0;
   private subscriptions: Subscription[] = [];
+  private isUpdating = false;
+  ngSelect: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
     private movieClient: MovieClient,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.movieForm = this.formBuilder.group({
       title: ['', Validators.required],
       year: [null, [Validators.required, Validators.pattern(/^[0-9]{4}$/)]],
-      licensingType: ['None', Validators.required],
+      licensingType: [null, Validators.required],
     });
+  }
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      if (params['id']) {
+        this.isUpdating = true;
+        this.loadMovieData(params['id']);
+      }
+    });
+  }
+
+  loadMovieData(movieId: string): void {
+    const subscription = this.movieClient.getMovie(movieId).subscribe(
+      (movie: Movie) => {
+        this.movieForm.patchValue({
+          title: movie.title,
+          year: movie.year,
+          licensingType: movie.licensingType,
+        });
+      },
+      (error) => {
+        console.error('Error fetching movie data:', error);
+      }
+    );
+
+    this.subscriptions.push(subscription);
   }
 
   onSubmit() {
     if (this.movieForm.valid) {
-      // Access the form values from movieForm
       const formValues = this.movieForm.value;
-      console.log('Form submitted:', formValues);
+      if (this.isUpdating) {
+        const movieData = {
+          id: this.route.snapshot.params['id'],
+          title: formValues.title,
+          year: formValues.year,
+          licensingType: formValues.licensingType,
+        };
+        this.updateMovie(movieData);
+      } else {
+        const movieData = {
+          title: formValues.title,
+          year: formValues.year,
+          licensingType: formValues.licensingType,
+        };
+        this.createMovie(movieData);
+      }
+    }
+  }
 
-      // Create a CreateMovieCommand object
-      const createMovieCommand = new CreateMovieCommand( {
-        title: formValues.title,
-        year: formValues.year,
-        licensingType: formValues.licensingType,
-      });
-
-      console.log('CreateMovieCommand object:', createMovieCommand);
-
-      const subscription = this.movieClient.createMovie(createMovieCommand).subscribe(
+  createMovie(movieData: any): void {
+    const subscription = this.movieClient.createMovie(movieData)
+      .subscribe(
         () => {
           console.log('Movie created successfully.');
           this.router.navigate(['/movies']);
@@ -54,18 +89,25 @@ export class CreateMovieComponent {
         }
       );
 
-      // Add the subscription to your subscriptions array to manage it
-      this.subscriptions.push(subscription);
-    } else {
-      // Form is invalid; display error messages or handle as needed.
-    }
+    this.subscriptions.push(subscription);
+  }
+
+  updateMovie(movieData: any): void {
+    const subscription = this.movieClient.updateMovie(movieData)
+      .subscribe(
+        () => {
+          console.log('Movie updated successfully.');
+          this.router.navigate(['/movies']);
+        },
+        (error) => {
+          console.error('Error updating movie:', error);
+        }
+      );
+
+    this.subscriptions.push(subscription);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
-
-
-
-
-
-
-
-

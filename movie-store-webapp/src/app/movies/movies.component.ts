@@ -30,11 +30,6 @@ export class MoviesComponent implements OnDestroy {
     this.subscriptions.push(subscription);
   }
 
-  createMovie() {
-    // Code to execute when the button is clicked
-    this.router.navigate(['/movies/create']);
-  }
-
   deleteMovie(id: string) {
     const subscription = this.movieClient.deleteMovie(id).subscribe(
       () => {

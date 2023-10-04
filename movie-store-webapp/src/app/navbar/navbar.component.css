@@ -42,6 +42,14 @@ mat-toolbar {
     z-index: 2;
 }
 
+.wendy-one-text-s {
+    font-family: "Wendy One", sans-serif;
+    color: rgb(255, 221, 0) !important;
+    background-color: #4B0082;
+    font-size: 18px;
+    z-index: 2;
+}
+
 
 
 

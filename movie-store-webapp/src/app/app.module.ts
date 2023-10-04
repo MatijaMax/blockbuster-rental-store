@@ -21,6 +21,9 @@ import { CreateMovieComponent } from './create-movie/create-movie.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -49,8 +52,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
+    MatCardModule,
+    MatDialogModule
+    
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,18 +12,26 @@
   .flex-table th {
     background-color: #4B0082; /* Header background color */
     color: #fff; /* Header text color */
-    padding: 10px; /* Header cell padding */
+    padding: 2px; /* Header cell padding */
     border: 2px solid #000; /* Header cell border */
     font-family: "Wendy One", sans-serif;
     font-size: large;
+    font-size: 24px;
     color: rgb(255, 221, 0) !important;
+    text-align: center;
   }
   
   /* Style table cells */
   .flex-table td {
     background-color: #D8BFD8; /* Cell background color */
-    color: #000; /* Cell text color */
+    color: #4B0082; /* Cell text color */
     padding: 10px; /* Cell padding */
     border: 2px solid #000; /* Cell border */
     font-size: larger;
+    text-align: center;
+  }
+
+  .violet-button {
+    background-color: #4B0082; /* Purple color */
+    color: rgb(255, 221, 0); /* White text color */
   }

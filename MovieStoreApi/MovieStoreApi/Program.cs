@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 using MovieStoreApi;
 using MovieStoreCore.Domain;
 using MovieStoreInfrastructure;
@@ -17,15 +19,19 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("http://localhost:4200")
                .AllowAnyHeader()
-               .AllowAnyMethod();
+               .AllowAnyMethod()
+               .AllowCredentials();
     });
 });
+
+// Configure JWT authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration, "AzureAd");
 
 // Add services to the container.
 builder.Services.AddDbContext<MovieStoreContext>(options =>
 {
     options.UseSqlServer(configuration.GetConnectionString("MovieStoreConnection"));
-
 });
 
 // Configure MediatR
@@ -60,9 +66,10 @@ dbContext.Database.Migrate();
 // Configure OpenApi/Swagger
 app.UseOpenApi(); // serve OpenAPI/Swagger documents
 app.UseSwaggerUi3(); // serve Swagger 
+app.UseAuthentication(); // Enable JWT authentication
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.MapControllers();
 app.Run();

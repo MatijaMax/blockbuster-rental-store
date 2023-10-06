@@ -20,10 +20,10 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
-import {MsalModule, MsalRedirectComponent, MsalGuard, MsalInterceptor} from '@azure/msal-angular';
+import { MsalModule, MsalRedirectComponent, MsalGuard, MsalInterceptor } from '@azure/msal-angular';
 import { InteractionType } from '@azure/msal-browser';
-import { PublicClientApplication } from '@azure/msal-browser'; 
-import {MatMenu} from '@angular/material/menu';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { MatMenu } from '@angular/material/menu';
 //COMPONENTS
 import { NavbarComponent } from './navbar/navbar.component';
 import { CustomersComponent } from './customers/customers.component';
@@ -61,7 +61,7 @@ import { AuthComponent } from './auth/auth.component';
     CommonModule,
     MatCardModule,
     MatDialogModule,
-    MatIconModule, 
+    MatIconModule,
     MsalModule.forRoot(
       new PublicClientApplication({
         auth: {
@@ -72,13 +72,16 @@ import { AuthComponent } from './auth/auth.component';
         cache: {
           cacheLocation: "localStorage",
         },
-      }),null!,
+      }), null!,
       {
-        interactionType: InteractionType.Popup, // 
+        interactionType: InteractionType.Popup,
         protectedResourceMap: new Map([
-          ["https://graph.microsoft.com", ["user.read"]],
+          ["https://localhost:7014/api/", [
+            'api://dbf7f51e-d046-435b-88ee-c4f9ee872967/to-do-lists.read',
+            'api://dbf7f51e-d046-435b-88ee-c4f9ee872967/to-do-lists.write'
+          ]],
         ]),
-      },
+      }
     ),
 
   ],
@@ -93,7 +96,7 @@ import { AuthComponent } from './auth/auth.component';
   ],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
-export class AppModule {}
+export class AppModule { }
 
 
 

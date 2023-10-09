@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieStoreApi.Customers.Commands;
 using MovieStoreApi.Customers.Queries;
@@ -7,7 +6,6 @@ using MovieStoreCore.Domain;
 
 namespace MovieStoreApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase
@@ -33,13 +31,20 @@ namespace MovieStoreApi.Controllers
         {
             var customer = await _mediator.Send(new GetCustomer.Query { Id = id });
             return customer == null ? NotFound() : Ok(customer);
+
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateCustomer(string email)
+        public async Task<IActionResult> CreateCustomer()
         {
-            var createdCustomer = await _mediator.Send(new CreateCustomer.Command { Email = email });
+            //parse token
+            var userEmail = User.FindFirst("preferred_username")?.Value;
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return BadRequest("Empty token");
+            }
+            var createdCustomer = await _mediator.Send(new CreateCustomer.Command { Email = userEmail });
             return Ok(createdCustomer);
         }
 

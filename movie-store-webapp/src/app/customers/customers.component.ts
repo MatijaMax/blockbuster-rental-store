@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { EditCustomerComponent } from '../edit-customer/edit-customer.component';
+import { MsalService } from '@azure/msal-angular';
 
 
 @Component({
@@ -18,8 +19,9 @@ export class CustomersComponent implements OnDestroy{
   private subscriptions: Subscription[] = [];
   displayedColumns: string[] = ['email', 'status', 'role', 'expirationDate', 'purchasedMovies', 'customerMenu'];
 
-  constructor(private customerClient: CustomerClient, private router: Router, private datePipe: DatePipe, public dialog:MatDialog) {
-    this.loadCustomers();;
+  constructor(private customerClient: CustomerClient, private router: Router, private datePipe: DatePipe, public dialog:MatDialog, private authService: MsalService) {
+
+    this.loadCustomers();
   }
 
   editCustomer(customerId: string): void {

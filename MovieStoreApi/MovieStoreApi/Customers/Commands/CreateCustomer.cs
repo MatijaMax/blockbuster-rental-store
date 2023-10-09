@@ -27,7 +27,11 @@ namespace MovieStoreApi.Customers.Commands
                     throw new ArgumentNullException(nameof(request));
                 }
 
-                var customer = new Customer { Email = request.Email, Role = MovieStoreCore.Domain.Enums.Role.Regular, Status = MovieStoreCore.Domain.Enums.Status.Regular };
+                var customer = _repository.Find(c => c.Email == request.Email).SingleOrDefault();
+                if (customer == null)
+                {
+                    customer = new Customer { Email = request.Email, Role = MovieStoreCore.Domain.Enums.Role.Regular, Status = MovieStoreCore.Domain.Enums.Status.Regular };
+                }
                 _repository.Insert(customer);
                 _repository.Save();
                 return Task.FromResult(customer);

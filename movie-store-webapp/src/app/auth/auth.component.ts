@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
 import { filter } from 'rxjs/operators';
+import { AuthService } from '../api/services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -10,7 +11,7 @@ import { filter } from 'rxjs/operators';
 })
 export class AuthComponent implements OnInit {
   loginDisplay = false;
-  constructor(private authService: MsalService, private msalBroadcastService: MsalBroadcastService) { }
+  constructor(private authService: MsalService, private msalBroadcastService: MsalBroadcastService, private authorizationService : AuthService) { }
 
   ngOnInit(): void {
     this.msalBroadcastService.msalSubject$
@@ -30,6 +31,6 @@ export class AuthComponent implements OnInit {
   }
 
   setLoginDisplay() {
-    this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
+    this.loginDisplay = this.authorizationService.isAuthenticated();
   }
 }

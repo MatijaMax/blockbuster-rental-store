@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MovieClient, Movie } from 'src/app/api/api-reference';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../api/services/auth.service';
 
 @Component({
   selector: 'app-movies',
@@ -11,8 +12,9 @@ import { Subscription } from 'rxjs';
 export class MoviesComponent implements OnDestroy {
   movies: Movie[] = [];
   private subscriptions: Subscription[] = [];
+  role? = 0;
 
-  constructor(private movieClient: MovieClient, private router: Router) {
+  constructor(private movieClient: MovieClient, private router: Router, private authorizationService : AuthService) {
     this.loadMovies();
   }
 
@@ -24,10 +26,12 @@ export class MoviesComponent implements OnDestroy {
       (error) => {
         console.error('Error loading movies:', error);
       }
-    );
-    
+    ); 
     // Add the subscription to the list of subscriptions
     this.subscriptions.push(subscription);
+    this.role = this.authorizationService.getCustomer()?.role;
+    console.log(this.role);
+    
   }
 
   deleteMovie(id: string) {

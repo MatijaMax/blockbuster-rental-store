@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieStoreApi.Customers.Commands;
 using MovieStoreApi.Customers.Queries;
@@ -6,6 +7,7 @@ using MovieStoreCore.Domain;
 
 namespace MovieStoreApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase
@@ -44,6 +46,7 @@ namespace MovieStoreApi.Controllers
             {
                 return BadRequest("Empty token");
             }
+            Console.WriteLine(userEmail);
             var createdCustomer = await _mediator.Send(new CreateCustomer.Command { Email = userEmail });
             return Ok(createdCustomer);
         }

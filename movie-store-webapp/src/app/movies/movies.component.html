@@ -19,10 +19,10 @@
         <button mat-raised-button color="accent" class="mat-button-large" *ngIf="movie.licensingType === 1">Rent</button>
 
         <!-- Mat Menu -->
-        <button mat-icon-button [matMenuTriggerFor]="menu" class="rotate-icon mat-button-large">
+        <button *ngIf="role === 1" mat-icon-button [matMenuTriggerFor]="menu" class="rotate-icon mat-button-large">
           <mat-icon>more_vert</mat-icon>
         </button>
-        <mat-menu #menu="matMenu" class="mat-button-large custom-menu">
+        <mat-menu  #menu="matMenu" class="mat-button-large custom-menu">
           <button [routerLink]="['/movies/update', movie.id]" mat-menu-item>Edit</button>
           <button mat-menu-item (click)="movie.id && deleteMovie(movie.id)">Delete</button>
         </mat-menu>

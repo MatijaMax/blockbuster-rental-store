@@ -5,7 +5,7 @@
     <div class="spacer"> </div>
 <button mat-button *ngIf="loginDisplay" class="wendy-one-text" [disabled]="true">{{ username }}</button>
 <a mat-button [routerLink]="['customers']" *ngIf="loginDisplay && (role == 1)" class="wendy-one-text">Customers</a>
-<a mat-button routerLink="movies" *ngIf="loginDisplay && (role == 0)"class="wendy-one-text">Movies</a>
+<a mat-button routerLink="movies" *ngIf="loginDisplay "class="wendy-one-text">Movies</a>
 <a mat-button routerLink="movies/create" *ngIf="loginDisplay && (role == 1)" class="wendy-one-text">Create Movie</a>
 <a mat-button routerLink="auth" *ngIf="!loginDisplay" (click)="login()" class="wendy-one-text-s">Sign In</a>
 <a mat-button routerLink="auth" *ngIf="loginDisplay" (click)="logout()" class="wendy-one-text-s">Sign Out</a>

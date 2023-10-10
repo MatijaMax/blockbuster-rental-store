@@ -17,7 +17,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface ICustomerClient {
     getAllCustomers(): Observable<Customer[]>;
-    createCustomer(email: string | undefined): Observable<Customer>;
+    createCustomer(): Observable<Customer>;
     getCustomer(id: string): Observable<Customer>;
     updateCustomer(id: string, email: string | undefined): Observable<void>;
     deleteCustomer(id: string): Observable<void>;
@@ -93,12 +93,8 @@ export class CustomerClient implements ICustomerClient {
         return _observableOf(null as any);
     }
 
-    createCustomer(email: string | undefined): Observable<Customer> {
-        let url_ = this.baseUrl + "/api/Customer?";
-        if (email === null)
-            throw new Error("The parameter 'email' cannot be null.");
-        else if (email !== undefined)
-            url_ += "email=" + encodeURIComponent("" + email) + "&";
+    createCustomer(): Observable<Customer> {
+        let url_ = this.baseUrl + "/api/Customer";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

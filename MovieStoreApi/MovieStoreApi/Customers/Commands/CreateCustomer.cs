@@ -31,8 +31,8 @@ namespace MovieStoreApi.Customers.Commands
                 if (customer == null)
                 {
                     customer = new Customer { Email = request.Email, Role = MovieStoreCore.Domain.Enums.Role.Regular, Status = MovieStoreCore.Domain.Enums.Status.Regular };
+                    _repository.Insert(customer);
                 }
-                _repository.Insert(customer);
                 _repository.Save();
                 return Task.FromResult(customer);
             }

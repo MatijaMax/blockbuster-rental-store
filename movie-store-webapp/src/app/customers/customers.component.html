@@ -47,9 +47,9 @@
                         <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #movieMenu="matMenu">
-                        <button (click)="customer.id && editCustomer(customer.id)" mat-menu-item>Edit Customer</button>
-                        <button (click)="customer.id && deleteCustomer(customer.id)" mat-menu-item>Delete Customer</button>
-                        <button (click)="customer.id && promoteCustomer(customer.id)" mat-menu-item>Promote Customer</button>
+                        <button *ngIf="customer.role ===0 " (click)="customer.id && editCustomer(customer.id)" mat-menu-item>Edit </button>
+                        <button *ngIf="customer.role ===0 " (click)="customer.id && deleteCustomer(customer.id)" mat-menu-item>Delete </button>
+                        <button (click)="customer.id && promoteCustomer(customer.id)" mat-menu-item>Promote </button>
                     </mat-menu>
                 </div>
             </td>

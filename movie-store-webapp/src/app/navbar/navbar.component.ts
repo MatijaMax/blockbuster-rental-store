@@ -4,6 +4,7 @@ import { InteractionStatus, PopupRequest, RedirectRequest } from '@azure/msal-br
 import { Observable, Subject } from 'rxjs';
 import { CustomerClient, Customer } from 'src/app/api/api-reference';
 import { filter, takeUntil } from 'rxjs/operators';
+import { AuthService } from '../api/services/auth.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -17,13 +18,12 @@ export class NavbarComponent {
   id? ='';
   loggedCustomer: Observable<Customer>[]= [];
 
-  constructor(private customerClient: CustomerClient, private authService: MsalService) { }
+  constructor(private customerClient: CustomerClient, private authService: MsalService, private authorizationService : AuthService) { }
   login() {
     this.authService.loginPopup()
       .subscribe({
         next: () => {
           this.setLoginDisplay(); // Update login display
-
         },
         error: (error) => console.log(error)
       });
@@ -38,18 +38,20 @@ export class NavbarComponent {
   setLoginDisplay() {
     const accounts = this.authService.instance.getAllAccounts();
     this.loginDisplay = accounts.length > 0;
-    this.username = accounts[0].username; 
+    this.username = accounts[0].username;
     if (accounts.length > 0) {
-      // Subscribe to the observable to load customer data
-      this.customerClient.createCustomer('Ask mentor for swagger api endpoints update').subscribe((data: Customer) => {
-        // Log the list of customers to the console
-        console.log(data);
-        this.role = data.role;
-        this.status = data.status;
-        this.id = data.id;
-        console.log(this.role);
-        console.log(this.status);
-      });
-    }
+      this.customerClient.createCustomer().subscribe(
+        (data: Customer) => {
+          this.role = data.role || 0;
+          this.status = data.status || 0; 
+          this.id = data.id || ''; 
+        },
+        (error) => {
+          console.error('Error fetching customer data:', error);
+        }
+      );
+    console.log(this.authorizationService.getCustomer());
   }
 }
+}
+

@@ -26,7 +26,7 @@ export class AuthService {
     }
   }
 
-  isAuthenticated(): Promise<boolean> {
+  async isAuthenticated(): Promise<boolean> {
     return Promise.resolve(this.isAuth);
   }
 

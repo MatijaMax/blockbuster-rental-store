@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'movies/create', component: CreateMovieComponent, canActivate:[AuthGuard] },
   { path: 'movies/update/:id', component: CreateMovieComponent, canActivate:[AuthGuard] },
   { path: 'customers/edit', component: EditCustomerComponent, canActivate:[AuthGuard] },
-  { path: 'auth', component: AuthComponent }
+  { path: 'auth', component: AuthComponent}
 ];
 
 const isIframe = window !== window.parent && !window.opener;

@@ -9,18 +9,35 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    console.log(this.authService.getCustomer());
+    const customer = await this.authService.getCustomer();
+    console.log(customer);
     const isAuth = await this.authService.isAuthenticated();
-    const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
-    const storedUserRole = localStorage.getItem('userRole');
+    console.log("OHO");
     console.log(isAuth);
     console.log("OHO");
-    console.log(storedIsLoggedIn);
-    if (storedIsLoggedIn === 'true') {
-      return true;
-    } else {
-      this.router.navigate(['auth']);
-      return false;
+    if (isAuth) {
+      if (customer) {
+        const role = customer.role;
+        console.log(`Role: ${role}`);
+        console.log(`URL: ${state.url}`);
+        // Allow access to all routes for role 1
+        if (role === 1) {
+          return true;
+        }
+        // For role 0, allow access to specific routes only
+        if (role === 0) {
+          const allowedRoutes: string[] = ['/movies']; // Replace with your allowed routes
+          if (allowedRoutes.includes(state.url)) {
+            return true;
+          } else {
+            // Redirect to a different route if the user is not allowed
+            this.router.navigate(['auth']); 
+            return false;
+          }
+        }
+      }
     }
+    this.router.navigate(['auth']);
+    return false;
   }
 }

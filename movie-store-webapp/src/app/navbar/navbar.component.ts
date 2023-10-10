@@ -33,6 +33,9 @@ export class NavbarComponent implements OnInit {
         next: () => {
           this.authService.instance.setActiveAccount(this.authService.instance.getAllAccounts()[0]);
           this.setLoginDisplay(); // Update login display
+          this.isLogged=true;
+          localStorage.setItem('isLoggedIn', this.isLogged.toString());
+          localStorage.setItem('userRole', this.role ? this.role.toString() : '');
           location.reload();
         },
         error: (error) => console.log(error)
@@ -40,10 +43,12 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() { // Add log out function here
+    localStorage.removeItem('myLoggedIn');
+    localStorage.removeItem('userRole');
     this.authService.logoutPopup({
       mainWindowRedirectUri: "/"
+      
     });
-    localStorage.removeItem('myData');
   }
 
   setLoginDisplay() {
@@ -55,9 +60,9 @@ export class NavbarComponent implements OnInit {
     this.authorizationService.getCustomer().then((customer) => {
       if (customer) {
         this.role = customer.role || 0;
-        this.isLogged=true;
-        localStorage.setItem('isLoggedIn', this.isLogged.toString());
-        localStorage.setItem('userRole', this.role ? this.role.toString() : '');
+        //this.isLogged=true;
+        //localStorage.setItem('isLoggedIn', this.isLogged.toString());
+        //localStorage.setItem('userRole', this.role ? this.role.toString() : '');
       }
     });
     this.authorizationService.getCustomer().then((customer) => {

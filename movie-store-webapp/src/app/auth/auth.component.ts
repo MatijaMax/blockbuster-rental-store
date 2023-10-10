@@ -31,6 +31,5 @@ export class AuthComponent implements OnInit {
   }
 
   setLoginDisplay() {
-    this.loginDisplay = this.authorizationService.isAuthenticated();
   }
 }

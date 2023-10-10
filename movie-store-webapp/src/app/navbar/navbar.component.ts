@@ -10,20 +10,30 @@ import { AuthService } from '../api/services/auth.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   loginDisplay = false;
-  username = '';
+  username? = '';
   role? =0;
   status? =0;
   id? ='';
+  isLogged = false;
   loggedCustomer: Observable<Customer>[]= [];
 
-  constructor(private customerClient: CustomerClient, private authService: MsalService, private authorizationService : AuthService) { }
+  constructor(private customerClient: CustomerClient, private authService: MsalService, private authorizationService : AuthService) 
+  {
+  }
+
+  ngOnInit(): void {
+      this.setLoginDisplay();
+  } 
+
   login() {
     this.authService.loginPopup()
       .subscribe({
         next: () => {
+          this.authService.instance.setActiveAccount(this.authService.instance.getAllAccounts()[0]);
           this.setLoginDisplay(); // Update login display
+          location.reload();
         },
         error: (error) => console.log(error)
       });
@@ -33,25 +43,32 @@ export class NavbarComponent {
     this.authService.logoutPopup({
       mainWindowRedirectUri: "/"
     });
+    localStorage.removeItem('myData');
   }
 
   setLoginDisplay() {
     const accounts = this.authService.instance.getAllAccounts();
-    this.loginDisplay = accounts.length > 0;
-    this.username = accounts[0].username;
-    if (accounts.length > 0) {
-      this.customerClient.createCustomer().subscribe(
-        (data: Customer) => {
-          this.role = data.role || 0;
-          this.status = data.status || 0; 
-          this.id = data.id || ''; 
-        },
-        (error) => {
-          console.error('Error fetching customer data:', error);
-        }
-      );
+    if(this.loginDisplay = accounts.length > 0){
+      this.username = accounts[0].username;
+
+    };
+    this.authorizationService.getCustomer().then((customer) => {
+      if (customer) {
+        this.role = customer.role || 0;
+        this.isLogged=true;
+        localStorage.setItem('isLoggedIn', this.isLogged.toString());
+        localStorage.setItem('userRole', this.role ? this.role.toString() : '');
+      }
+    });
+    this.authorizationService.getCustomer().then((customer) => {
+      if (customer) {
+        this.role = customer.role || 0;
+      }
+    });
+
     console.log(this.authorizationService.getCustomer());
+    console.log(accounts.length);
   }
 }
-}
+
 

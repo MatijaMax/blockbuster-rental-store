@@ -29,8 +29,11 @@ export class MoviesComponent implements OnDestroy {
     ); 
     // Add the subscription to the list of subscriptions
     this.subscriptions.push(subscription);
-    this.role = this.authorizationService.getCustomer()?.role;
-    console.log(this.role);
+    this.authorizationService.getCustomer().then((customer) => {
+      if (customer) {
+        this.role = customer.role || 0;
+      }
+    });
     
   }
 

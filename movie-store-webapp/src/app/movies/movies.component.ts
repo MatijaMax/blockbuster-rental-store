@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { MovieClient, Movie } from 'src/app/api/api-reference';
+import { MovieClient, Movie, CustomerClient } from 'src/app/api/api-reference';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../api/services/auth.service';
 
@@ -13,8 +13,9 @@ export class MoviesComponent implements OnDestroy {
   movies: Movie[] = [];
   private subscriptions: Subscription[] = [];
   role? = 0;
+  loggerId? =''
 
-  constructor(private movieClient: MovieClient, private router: Router, private authorizationService : AuthService) {
+  constructor(private movieClient: MovieClient, private customerClient : CustomerClient, private router: Router, private authorizationService : AuthService) {
     this.loadMovies();
   }
 
@@ -32,6 +33,7 @@ export class MoviesComponent implements OnDestroy {
     this.authorizationService.getCustomer().then((customer) => {
       if (customer) {
         this.role = customer.role || 0;
+        this.loggerId = customer.id;
       }
     });
     
@@ -51,6 +53,24 @@ export class MoviesComponent implements OnDestroy {
     
     // Add the subscription to the list of subscriptions
     this.subscriptions.push(subscription);
+  }
+
+  purchaseMovie(customerId: string , movieId: string ){
+    const subscription = this.customerClient.purchaseMovie(customerId, movieId).subscribe(
+      () => {
+        console.log('Movie purchased successfully.');
+      },
+      (error) => {
+        console.error('Error purchasing movie:', error);
+      }
+    );
+    
+    // Add the subscription to the list of subscriptions
+    this.subscriptions.push(subscription);
+  }
+
+  showPurchasedMovies(){
+    
   }
 
   ngOnDestroy() {

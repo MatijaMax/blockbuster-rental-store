@@ -4,14 +4,14 @@ namespace MovieStoreInfrastructure.Repositories
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        private readonly MovieStoreContext context;
+        protected readonly MovieStoreContext context;
 
         public GenericRepository(MovieStoreContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return context.Set<T>().ToList();
         }

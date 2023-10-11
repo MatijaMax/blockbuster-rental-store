@@ -12,9 +12,6 @@ export class AuthGuard implements CanActivate {
     const customer = await this.authService.getCustomer();
     console.log(customer);
     const isAuth = await this.authService.isAuthenticated();
-    console.log("OHO");
-    console.log(isAuth);
-    console.log("OHO");
     if (isAuth) {
       if (customer) {
         const role = customer.role;

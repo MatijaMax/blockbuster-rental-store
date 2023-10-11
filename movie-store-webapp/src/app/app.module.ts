@@ -31,6 +31,7 @@ import { MoviesComponent } from './movies/movies.component';
 import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 import { CreateMovieComponent } from './create-movie/create-movie.component';
 import { AuthComponent } from './auth/auth.component';
+import { MovieListPopupComponent } from './movie-list-popup/movie-list-popup.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AuthComponent } from './auth/auth.component';
     EditCustomerComponent,
     CreateMovieComponent,
     AuthComponent,
+    MovieListPopupComponent,
   ],
   imports: [
     BrowserModule,

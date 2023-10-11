@@ -21,17 +21,8 @@ const routes: Routes = [
   { path: 'auth', component: AuthComponent}
 ];
 
-const isIframe = window !== window.parent && !window.opener;
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes,
-    {
-      initialNavigation:
-        !BrowserUtils.isInIframe() && !BrowserUtils.isInPopup()
-          ? "enabledNonBlocking"
-          : "disabled", // Set to enabledBlocking to use Angular Universal 
-
-    }),
+  imports: [RouterModule.forRoot(routes),
   ],
   exports: [RouterModule]
 })

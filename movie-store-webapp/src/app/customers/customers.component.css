@@ -7,6 +7,11 @@
     background-color: #f0f0f0; /* Set the background color */
     border: 2px solid #000; /* Add a 2px solid black border */
   }
+
+  .custom-dialog {
+    background-color: purple; /* Set the background color of the dialog */
+    color: white; /* Set the text color */
+  }
   
   /* Style table header */
   .flex-table th {

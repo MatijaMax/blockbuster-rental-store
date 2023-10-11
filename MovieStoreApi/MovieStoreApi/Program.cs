@@ -5,6 +5,7 @@ using MovieStoreApi;
 using MovieStoreCore.Domain;
 using MovieStoreInfrastructure;
 using MovieStoreInfrastructure.Repositories;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +43,7 @@ builder.Services.AddMediatR(cfg =>
 
 // Initialize repositories
 builder.Services.AddTransient<IRepository<Movie>, GenericRepository<Movie>>();
-builder.Services.AddTransient<IRepository<Customer>, GenericRepository<Customer>>();
+builder.Services.AddTransient<IRepository<Customer>, CustomerRepository>();
 builder.Services.AddTransient<IRepository<PurchasedMovie>, GenericRepository<PurchasedMovie>>();
 
 //Schema name generation
@@ -52,7 +53,11 @@ builder.Services.AddOpenApiDocument(cfg =>
 });
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
 //Build the app
 var app = builder.Build();

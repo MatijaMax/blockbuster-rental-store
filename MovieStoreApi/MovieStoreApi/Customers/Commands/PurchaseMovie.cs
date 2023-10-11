@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MovieStoreCore.Domain;
+using MovieStoreCore.Domain.Enums;
 using MovieStoreInfrastructure.Repositories;
 
 namespace MovieStoreApi.Customers.Commands
@@ -41,7 +42,11 @@ namespace MovieStoreApi.Customers.Commands
                     return Task.FromResult(false);
                 }
 
-                PurchasedMovie purchasedMovie = new PurchasedMovie { Customer = customer, Movie = movie, PurchaseDate = DateTime.Now, ExpirationDate = DateTime.Now.AddMonths(2) };
+                PurchasedMovie purchasedMovie = new PurchasedMovie { Customer = customer, Movie = movie, PurchaseDate = DateTime.Now };
+                if (movie.LicensingType == LicensingType.TwoDay)
+                {
+                    purchasedMovie.ExpirationDate = DateTime.Now.AddDays(2);
+                }
                 _purchasedMovieRepository.Insert(purchasedMovie);
                 _purchasedMovieRepository.Save();
                 return Task.FromResult(true);

@@ -11,12 +11,16 @@
         <p *ngIf="movie.licensingType === 0">Licensing Type: Two days</p>
         <p *ngIf="movie.licensingType === 1">Licensing Type: Lifelong</p>
       </div>
+      <!--
       <div>
         <p>Price: {{ movie.price }}</p>
+      </div> -->
+      <div>
+        <p>Price: Free </p>
       </div>
       <div>
-        <button mat-raised-button color="accent" class="mat-button-large" *ngIf="movie.licensingType === 0">Purchase</button>
-        <button mat-raised-button color="accent" class="mat-button-large" *ngIf="movie.licensingType === 1">Rent</button>
+        <button mat-raised-button color="accent" (click)="purchaseMovie(loggerId!, movie?.id!)" class="mat-button-large" *ngIf="movie.licensingType === 0">Rent</button>
+        <button mat-raised-button color="accent" (click)="purchaseMovie(loggerId!, movie?.id!)" class="mat-button-large" *ngIf="movie.licensingType === 1">Purchase</button>
 
         <!-- Mat Menu -->
         <button *ngIf="role === 1" mat-icon-button [matMenuTriggerFor]="menu" class="rotate-icon mat-button-large">

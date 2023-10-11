@@ -60,11 +60,7 @@ namespace MovieStoreApi.Customers.Commands
             }
             public bool IsEnoughMoneySpent()
             {
-
-                //kad dodamo cenu
-
-
-
+                //we made everything free
                 return true;
             }
         }

@@ -2,6 +2,7 @@
 {
     public class EmailServiceOptions
     {
+        public static string SectionName = "EmailService";
         public string SmtpServer { get; set; }
         public int SmtpPort { get; set; }
         public string SmtpUsername { get; set; }

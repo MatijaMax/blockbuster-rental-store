@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
 });
 
 //Configur EmailServiceOptions
-builder.Services.Configure<EmailServiceOptions>(configuration.GetSection("EmailService"));
+builder.Services.Configure<EmailServiceOptions>(configuration.GetSection(EmailServiceOptions.SectionName));
 
 // Configure JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

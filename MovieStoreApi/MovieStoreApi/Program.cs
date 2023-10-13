@@ -21,9 +21,12 @@ builder.Services.AddCors(options =>
         builder.WithOrigins("http://localhost:4200")
                .AllowAnyHeader()
                .AllowAnyMethod()
-               .AllowCredentials();
+        .AllowCredentials();
     });
 });
+
+//Configur EmailServiceOptions
+builder.Services.Configure<EmailServiceOptions>(configuration.GetSection("EmailService"));
 
 // Configure JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -58,6 +61,9 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
+
+// Add email sending service
+builder.Services.AddHostedService<TimedHostedService>();
 
 //Build the app
 var app = builder.Build();
